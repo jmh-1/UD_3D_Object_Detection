@@ -75,6 +75,7 @@ def load_configs_model(model_name='darknet', configs=None):
         configs.num_workers = 4
         configs.batch_size = 4
         configs.peak_thresh = 0.2
+        configs.conf_thresh = configs.peak_thresh
         configs.save_test_output = False
         configs.output_format = 'image'
         configs.output_video_fn = 'out_fpn_resnet_18'
@@ -211,7 +212,15 @@ def detect_objects(input_bev_maps, model, configs):
             ####### ID_S3_EX1-5 START #######     
             #######
             print("student task ID_S3_EX1-5")
-
+            outputs['hm_cen'] = _sigmoid(outputs['hm_cen'])
+            outputs['cen_offset'] = _sigmoid(outputs['cen_offset'])
+            # detections size (batch_size, K, 10)
+            detections = decode(outputs['hm_cen'], outputs['cen_offset'], outputs['direction'], outputs['z_coor'],
+                                outputs['dim'], K=configs.K)
+            detections = detections.cpu().numpy().astype(np.float32)
+            detections = post_processing(detections, configs)
+            detections = detections[0][1]
+            
             #######
             ####### ID_S3_EX1-5 END #######     
 
@@ -234,5 +243,8 @@ def detect_objects(input_bev_maps, model, configs):
     #######
     ####### ID_S3_EX2 START #######   
     
-    return objects    
+    return objects
+
+def _sigmoid(x):
+    return torch.clamp(x.sigmoid_(), min=1e-4, max=1 - 1e-4)
 
