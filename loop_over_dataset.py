@@ -52,7 +52,7 @@ import misc.params as params
 data_filename = 'training_segment-1005081002024129653_5313_150_5333_150_with_camera_labels.tfrecord' # Sequence 1
 # data_filename = 'training_segment-10072231702153043603_5725_000_5745_000_with_camera_labels.tfrecord' # Sequence 2
 # data_filename = 'training_segment-10963653239323173269_1924_000_1944_000_with_camera_labels.tfrecord' # Sequence 3
-show_only_frames = [50, 51] # show only frames in interval for debugging
+show_only_frames = [20, 41] # show only frames in interval for debugging
 
 ## Prepare Waymo Open Dataset file for loading
 data_fullpath = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'dataset', data_filename) # adjustable path in case this script is called from another working directory
@@ -158,14 +158,14 @@ while True:
             valid_label_flags = load_object_from_file(results_fullpath, data_filename, 'valid_labels', cnt_frame)            
 
         ## Performance evaluation for object detection
-        if 'measure_detection_performance' in exec_list:
-            print('measuring detection performance')
-            det_performance = eval.measure_detection_performance(detections, frame.laser_labels, valid_label_flags, configs_det.min_iou)     
-        else:
-            print('loading detection performance measures from file')
-            det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance_' + configs_det.arch + '_' + str(configs_det.conf_thresh), cnt_frame)   
+        # if 'measure_detection_performance' in exec_list:
+        #     print('measuring detection performance')
+        #     det_performance = eval.measure_detection_performance(detections, frame.laser_labels, valid_label_flags, configs_det.min_iou)     
+        # else:
+        #     print('loading detection performance measures from file')
+        #     det_performance = load_object_from_file(results_fullpath, data_filename, 'det_performance_' + configs_det.arch + '_' + str(configs_det.conf_thresh), cnt_frame)   
 
-        det_performance_all.append(det_performance) # store all evaluation results in a list for performance assessment at the end
+        # det_performance_all.append(det_performance) # store all evaluation results in a list for performance assessment at the end
         
 
         ## Visualization for object detection
