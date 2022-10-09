@@ -111,6 +111,7 @@ def load_configs_model(model_name='darknet', configs=None):
         raise ValueError("Error: Invalid model name")
 
     # GPU vs. CPU
+    configs.min_iou = .5
     configs.no_cuda = True # if true, cuda is not used
     configs.gpu_idx = 0  # GPU index to use.
     configs.device = torch.device('cpu' if configs.no_cuda else 'cuda:{}'.format(configs.gpu_idx))
@@ -234,7 +235,8 @@ def detect_objects(input_bev_maps, model, configs):
 
     ## step 1 : check whether there are any detections
     for d in detections:
-        o = d / [1, configs.bev_width, configs.bev_height, 1, 1, configs.bev_width, configs.bev_height, 1]
+        o = np.array(d)
+        o = o / [1, configs.bev_width, configs.bev_height, 1, 1, configs.bev_width, configs.bev_height, 1]
         o = o[[0,2,1,3,4,5,6,7]]
         o[0] = 1
         o[2] = o[2] - .5
