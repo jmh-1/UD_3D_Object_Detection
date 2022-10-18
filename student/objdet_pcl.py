@@ -134,7 +134,7 @@ def bev_from_pcl(lidar_pcl, configs):
     # step 3 : perform the same operation as in step 2 for the y-coordinates but make sure that no negative bev-coordinates occur
     lidar_pcl_cpy[:,1] = np.int_((lidar_pcl_cpy[:,1] + configs.lim_y[1]) / x_disc)
     # step 4 : visualize point-cloud using the function show_pcl from a previous task
-    #show_pcl(lidar_pcl_cpy, 0)
+    show_pcl(lidar_pcl_cpy, 0)
     
     #######
     ####### ID_S2_EX1 END #######     
@@ -167,9 +167,9 @@ def bev_from_pcl(lidar_pcl, configs):
     img_intensity[img_intensity > intensity_truncation] = intensity_truncation
     img_intensity = img_intensity * 256 / (np.amax(img_intensity) - np.amin(img_intensity))
     img_intensity = img_intensity.astype(np.uint8)
-    # cv2.imshow('img_intensity', img_intensity)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    cv2.imshow('img_intensity', img_intensity)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     #######
     ####### ID_S2_EX2 END ####### 
 
@@ -189,9 +189,9 @@ def bev_from_pcl(lidar_pcl, configs):
     ## step 3 : temporarily visualize the intensity map using OpenCV to make sure that vehicles separate well from the background
     img_intensity = height_map * 256
     img_intensity = img_intensity.astype(np.uint8)
-    # cv2.imshow('img_intensity', img_intensity)
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+    cv2.imshow('img_intensity', img_intensity)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     #######
     ####### ID_S2_EX3 END #######       
 
